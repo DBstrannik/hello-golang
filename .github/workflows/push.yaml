@@ -1,14 +1,24 @@
 name: golang-pipeline
+
 on: [push]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: golang:1.24.3  # Обновлено до 1.24
-
-  steps:
-  - uses: actions/checkout@v4
-  - name: Install dependencies
-    run: go mod download  # ← Новый шаг
-  - name: Run Unit Tests
-    run: go test ./...
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24.0'  # Точная версия из go.mod
+      
+      - name: Check Go version
+        run: go version
+      
+      - name: Run Unit Tests
+        run: go test ./...
+      
+      - name: Vet
+        run: go vet ./...
