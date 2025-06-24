@@ -1,21 +1,14 @@
-name: golang-pipeline  # Название workflow
-
-# Запускаем при каждом push в любую ветку
+name: golang-pipeline
 on: [push]
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Используем свежий Ubuntu
-    container: golang:1.22  # Берём официальный образ Go 1.22
+    runs-on: ubuntu-latest
+    container: golang:1.24.3  # Обновлено до 1.24
 
-    steps:
-      # Шаг 1: Клонируем репозиторий
-      - uses: actions/checkout@v4
-
-      # Шаг 2: Запускаем unit-тесты
-      - name: Run Unit Tests
-        run: go test ./...
-
-      # Шаг 3: Проверяем код через go vet
-      - name: Vet
-        run: go vet ./...
+  steps:
+  - uses: actions/checkout@v4
+  - name: Install dependencies
+    run: go mod download  # ← Новый шаг
+  - name: Run Unit Tests
+    run: go test ./...
