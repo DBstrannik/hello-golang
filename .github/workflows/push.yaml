@@ -3,13 +3,17 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: golang:1.24  # Используйте тег 1.24 вместо 1.24.0
     steps:
       - uses: actions/checkout@v4
-
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'  # Указываем точную версию
+      
       - name: Run Unit Tests
         run: GOOS=linux GOARCH=amd64 go test ./...
-
+      
       - name: Vet
         run: go vet ./...
 
